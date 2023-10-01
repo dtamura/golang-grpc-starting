@@ -1,0 +1,33 @@
+// protoのバージョンの宣言
+syntax = "proto3";
+
+// protoファイルから自動生成させるGoのコードの置き先
+// (詳細は4章にて)
+option go_package = "genproto/hello";
+
+// packageの宣言
+package myapp;
+
+// サービスの定義
+service GreetingService {
+	// サービスが持つメソッドの定義
+	rpc Hello (HelloRequest) returns (HelloResponse); 
+}
+
+// 型の定義
+message HelloRequest {
+	string name = 1;
+}
+
+message HelloResponse {
+	string message = 1;
+}
+
+// Timestamp型を記述しているprotoファイルをimport
+import "google/protobuf/timestamp.proto";
+
+message MyMessage {
+	string message = 1;
+	// パッケージ名"google.protobuf" + 型名"Timestamp"で記述
+	google.protobuf.Timestamp create_time = 2;
+}
