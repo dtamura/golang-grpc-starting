@@ -9,6 +9,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 
 	pb "golang-grpc-starting/genproto/hello"
 )
@@ -69,7 +70,12 @@ func Hello() {
 	req := &pb.HelloRequest{
 		Name: name,
 	}
-	res, err := client.Hello(context.Background(), req)
+
+	ctx := context.Background()
+	md := metadata.New(map[string]string{"type": "unary", "from": "client"})
+	ctx = metadata.NewOutgoingContext(ctx, md)
+
+	res, err := client.Hello(ctx, req)
 	if err != nil {
 		fmt.Println(err)
 	} else {
